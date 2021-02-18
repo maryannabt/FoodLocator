@@ -16,7 +16,8 @@ const Header = () => {
 
   const Wrapper = styled.div`
     background-color: #800000;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     width: 100%;
@@ -24,6 +25,7 @@ const Header = () => {
     
     @media only screen and (max-width: 768px) {
         flex-wrap: wrap;
+        padding-bottom: 1rem;
     }
   `;
 

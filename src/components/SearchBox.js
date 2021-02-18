@@ -56,7 +56,7 @@ const SearchBox = () => {
         ref={autocompleteRef}
         onKeyDown={submitHandler}
       />
-      <Img src={gps_img} alt="enable location icon" onClick={locateMe}/>
+      <Img src={gps_img} alt="enable location icon" onClick={locateMe} />
     </Wrapper>
   );
 };
@@ -78,7 +78,7 @@ const Wrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: 30rem;
+  width: 32rem;
   height: 2.2rem;
   display: flex;
   align-items: center;
@@ -90,7 +90,7 @@ const Input = styled.input`
   box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
 
   @media only screen and (max-width: 768px) {
-    width: 95%;
+    width: 100%;
   }
 `;
 
@@ -103,7 +103,7 @@ const Img = styled.img`
   cursor: pointer;
 
   @media only screen and (max-width: 768px) {
-    right: 6.5%;
+    right: 1.5%;
   }
 `;
 
