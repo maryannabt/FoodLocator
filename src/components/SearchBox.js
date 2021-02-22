@@ -17,7 +17,7 @@ const SearchBox = () => {
   };
 
   const locateMe = useCallback(() => {
-    if (navigator.geolocation) {
+    if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const locationData = {
           geometry: {
