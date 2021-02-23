@@ -1,7 +1,9 @@
 import React, { useRef, useEffect, useContext, useCallback } from 'react';
+import { render } from 'react-dom';
 import styled from "styled-components";
 
 import { LocationContext } from "../context/location-context";
+import InfoWindow from "./InfoWindow";
 
 const Map = () => {
     const locationContext = useContext(LocationContext);
@@ -9,8 +11,32 @@ const Map = () => {
     let map = useRef();
     let placesService = useRef();
     let markers = useRef([]);
+    let infoWindow = useRef();
 
     const { location, filter, updateLocation, updatePlaces } = locationContext;
+
+    const showInfoWindow = (marker) => {
+      placesService.current.getDetails({ placeId: marker.placeResult.place_id },
+        (place, status) => {
+          if (status !== window.google.maps.places.PlacesServiceStatus.OK) {
+            return;
+          }
+
+          infoWindow.current = new window.google.maps.InfoWindow({
+            content: '<div id="infoWindow" />'
+          });
+
+          infoWindow.current.addListener('domready', () => {
+            render(<InfoWindow place={place} />, document.getElementById('infoWindow'));
+          });
+
+          infoWindow.current.open(map.current, marker);
+        });
+    };
+
+    const closeInfoWindow = () => {
+        infoWindow.current.close();
+    };
 
     const dropMarker = (i) => {
       return () => {
@@ -39,6 +65,8 @@ const Map = () => {
         });
 
         markers.current[i].placeResult = foundPlaces[i];
+        window.google.maps.event.addListener(markers.current[i], 'mouseover', () => showInfoWindow(markers.current[i]));
+        window.google.maps.event.addListener(markers.current[i], 'mouseout', () => closeInfoWindow());
         setTimeout(dropMarker(i), i * 150);
       }
     }, []);
@@ -99,7 +127,7 @@ const Map = () => {
           search();
         }
       }
-    }, [location, search]);
+    }, [location, filter, search]);
 
     return (
       <Wrapper>
