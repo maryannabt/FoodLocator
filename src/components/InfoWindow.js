@@ -1,8 +1,11 @@
 import React from 'react';
 import styled from "styled-components";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
+
 const InfoWindow = ({ place }) => {
-    const openText = place.opening_hours ? (place.opening_hours.isOpen() ? 'Open Now' : 'Currently Closed') : 'Hours N/A';
+    const openText = place.opening_hours ? (place.opening_hours.isOpen() ? ' Open Now' : ' Currently Closed') : ' Hours N/A';
 
     const priceLevel = () => {
         if(!place.price_level) {
@@ -12,10 +15,10 @@ const InfoWindow = ({ place }) => {
         } else {
             return (
                 <span>
-                    <i className={place.price_level >= 1 ? "fas fa-dollar-sign" : "far fa-dollar-sign"}></i>
-                    <i className={place.price_level >= 2 ? "fas fa-dollar-sign" : "far fa-dollar-sign"}></i>
-                    <i className={place.price_level >= 3 ? "fas fa-dollar-sign" : "far fa-dollar-sign"}></i>
-                    <i className={place.price_level >= 4 ? "fas fa-dollar-sign" : "far fa-dollar-sign"}></i>
+                  {place.price_level >= 1 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
+                  {place.price_level >= 2 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
+                  {place.price_level >= 3 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
+                  {place.price_level >= 4 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
                 </span>
             );
         }
@@ -39,14 +42,15 @@ const InfoWindow = ({ place }) => {
     padding: 1rem;
     display: flex;
     flex-direction: column;
+    text-align: center;
   `;
 
   const Title = styled.h2`
     color: rgba(0, 0, 0, 0.87);
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 400;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.35417em;
+    line-height: 1.3em;
     margin-bottom: 0.35em;
   `;
 
@@ -55,11 +59,15 @@ const InfoWindow = ({ place }) => {
     font-size: 0.875rem;
     font-weight: 400;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.46429em;
-    margin-bottom: 0.15em;
+    line-height: 1.4em;
+    margin-bottom: 0.2em;
   `;
 
   const Info = styled(Address)`
     color: #333;
     margin-bottom: 0;
+
+    & i {
+      color: grey;
+    }
   `;

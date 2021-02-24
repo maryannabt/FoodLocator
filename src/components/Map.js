@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useContext, useCallback } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import styled from "styled-components";
 
 import { LocationContext } from "../context/location-context";
@@ -15,7 +15,16 @@ const Map = () => {
 
     const { location, filter, updateLocation, updatePlaces } = locationContext;
 
-    const showInfoWindow = (marker) => {
+    const isInfoWindowOpen = (infoWindow) => {
+      let map = infoWindow.getMap();
+      return (map !== null && typeof map !== "undefined");
+    };
+
+    const showInfoWindow = useCallback((marker) => {
+      if(infoWindow.current && isInfoWindowOpen(infoWindow.current)) {
+        return;
+      }
+
       placesService.current.getDetails({ placeId: marker.placeResult.place_id },
         (place, status) => {
           if (status !== window.google.maps.places.PlacesServiceStatus.OK) {
@@ -23,20 +32,16 @@ const Map = () => {
           }
 
           infoWindow.current = new window.google.maps.InfoWindow({
-            content: '<div id="infoWindow" />'
+            content: '<div id="infoWindow" />',
           });
 
           infoWindow.current.addListener('domready', () => {
-            render(<InfoWindow place={place} />, document.getElementById('infoWindow'));
+            ReactDOM.render(<InfoWindow place={place} />, document.getElementById('infoWindow'));
           });
 
-          infoWindow.current.open(map.current, marker);
+            infoWindow.current.open(map.current, marker);
         });
-    };
-
-    const closeInfoWindow = () => {
-        infoWindow.current.close();
-    };
+    }, []);
 
     const dropMarker = (i) => {
       return () => {
@@ -65,11 +70,10 @@ const Map = () => {
         });
 
         markers.current[i].placeResult = foundPlaces[i];
-        window.google.maps.event.addListener(markers.current[i], 'mouseover', () => showInfoWindow(markers.current[i]));
-        window.google.maps.event.addListener(markers.current[i], 'mouseout', () => closeInfoWindow());
+        window.google.maps.event.addListener(markers.current[i], 'click', () => showInfoWindow(markers.current[i]));
         setTimeout(dropMarker(i), i * 150);
       }
-    }, []);
+    }, [showInfoWindow]);
 
     const sortPlaces = useCallback((placesToSort) => {
       if (filter === 'Ratings') {
