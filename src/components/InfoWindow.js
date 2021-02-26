@@ -52,6 +52,10 @@ const InfoWindow = ({ place }) => {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1.3em;
     margin-bottom: 0.35em;
+
+    @media only screen and (max-width: 768px) {
+      font-size: 1.2rem;
+    }
   `;
 
   const Address = styled.p`
@@ -61,6 +65,10 @@ const InfoWindow = ({ place }) => {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1.4em;
     margin-bottom: 0.2em;
+
+    @media only screen and (max-width: 768px) {
+      font-size: 0.775rem;
+    }
   `;
 
   const Info = styled(Address)`

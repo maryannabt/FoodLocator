@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Header from "./components/Header";
 import Map from "./components/Map";
+import Places from "./components/Places";
 import { LocationContext } from "./context/location-context";
 import { useLocation } from "./hooks/location-hook";
 
@@ -24,7 +25,7 @@ const App = () => {
         <Header />
         <Wrapper>
           <Map />
-          <Dummy></Dummy>
+          <Places />
         </Wrapper>
       </React.Fragment>
     </LocationContext.Provider>
@@ -40,19 +41,5 @@ const Wrapper = styled.div`
 
   @media only screen and (max-width: 768px) {
     flex-wrap: wrap;
-  }
-`;
-
-const Dummy = styled.div`
-  background: yellow;
-  flex-grow: 1;
-  height: 90vh;
-  overflow-y: scroll;
-
-  @media only screen and (max-width: 768px) {
-    flex-grow: 0;
-    width: 100%;
-    overflow-y: visible;
-    height: auto;
   }
 `;

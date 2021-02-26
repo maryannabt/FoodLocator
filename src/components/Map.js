@@ -143,13 +143,11 @@ const Map = () => {
   export default Map;
 
   const Wrapper = styled.div`
-    flex-grow: 2;
+    flex-basis: calc( 100% * 2/3);
     height: 90vh;
-    padding-right: 1rem;
 
     @media only screen and (max-width: 768px) {
-        flex-grow: 0;
-        width: 100%;
+        flex-basis: 100%;
         height: 40vh;
     }
   `;
