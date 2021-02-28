@@ -13,7 +13,7 @@ const Map = () => {
     let markers = useRef([]);
     let infoWindow = useRef();
 
-    const { location, filter, updateLocation, updatePlaces } = locationContext;
+    const { location, filter, places, updateLocation, updatePlaces } = locationContext;
 
     const isInfoWindowOpen = (infoWindow) => {
       let map = infoWindow.getMap();
@@ -73,13 +73,14 @@ const Map = () => {
         window.google.maps.event.addListener(markers.current[i], 'click', () => showInfoWindow(markers.current[i]));
         setTimeout(dropMarker(i), i * 150);
       }
+      console.log("setupmarkers")
     }, [showInfoWindow]);
 
     const sortPlaces = useCallback((placesToSort) => {
-      if (filter === 'Ratings') {
-        return placesToSort.sort((a, b) => b.rating - a.rating);
-      } else if (filter === 'Price') {
-        return placesToSort.sort((a, b) => a.price_level - b.price_level);
+      if (filter === "Ratings") {
+        return [...placesToSort].sort((a, b) => b.rating - a.rating);
+      } else if (filter === "Price") {
+        return [...placesToSort].sort((a, b) => a.price_level - b.price_level);
       } else {
         return placesToSort;
       }
@@ -98,6 +99,7 @@ const Map = () => {
             const sortedResults = sortPlaces(results);
             updatePlaces(sortedResults);
             setUpMarkers(sortedResults);
+            console.log("search")
           }
         });
       }
@@ -131,7 +133,13 @@ const Map = () => {
           search();
         }
       }
-    }, [location, filter, search]);
+    }, [location, search]);
+
+    useEffect(() => {
+        const sortedPlaces = sortPlaces(places);
+        updatePlaces(sortedPlaces);
+        setUpMarkers(sortedPlaces);
+    }, [filter, setUpMarkers, sortPlaces, updatePlaces]);
 
     return (
       <Wrapper>

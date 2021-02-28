@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 export const useLocation = () => {
   const [location, setLocation] = useState({});
   const [places, setPlaces] = useState([]);
-  const [filter, setFilter] = useState('None');
+  const [filter, setFilter] = useState("None");
 
   const updateLocation = useCallback((location) => {
     setLocation(location);

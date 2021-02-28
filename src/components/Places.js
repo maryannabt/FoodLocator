@@ -15,7 +15,7 @@ const Places = () => {
 
   const Wrapper = styled.div`
     flex-basis: calc(100% / 3);
-    min-width: 20rem;
+    min-width: 21rem;
     height: 90vh;
     padding: 0 1rem;
     overflow-y: scroll;
