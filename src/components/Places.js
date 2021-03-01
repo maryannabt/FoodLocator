@@ -2,11 +2,13 @@ import React from 'react';
 import styled from "styled-components";
 
 import Filter from "./Filter";
+import PlacesList from "./PlacesList";
 
 const Places = () => {
     return (
       <Wrapper>
         <Filter />
+        <PlacesList />
       </Wrapper>
     );
   };

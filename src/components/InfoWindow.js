@@ -43,14 +43,14 @@ const InfoWindow = ({ place }) => {
     display: flex;
     flex-direction: column;
     text-align: center;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: rgba(0, 0, 0, 0.87);
   `;
 
   const Title = styled.h2`
-    color: rgba(0, 0, 0, 0.87);
     font-size: 1.4rem;
     font-weight: 400;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.3em;
+    line-height: 1.3;
     margin-bottom: 0.35em;
 
     @media only screen and (max-width: 768px) {
@@ -59,11 +59,9 @@ const InfoWindow = ({ place }) => {
   `;
 
   const Address = styled.p`
-    color: rgba(0, 0, 0, 0.87);
     font-size: 0.875rem;
     font-weight: 400;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1.4em;
+    line-height: 1.4;
     margin-bottom: 0.2em;
 
     @media only screen and (max-width: 768px) {

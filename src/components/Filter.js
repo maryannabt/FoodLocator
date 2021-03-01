@@ -63,10 +63,13 @@ const Filter = () => {
     padding-bottom: 1rem;
     font-size: 1rem;
     font-weight: 400;
+    background-color: #ffffff;
     color: rgba(0, 0, 0, 0.87);
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     border-bottom: 1px solid grey;
-    position: relative;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 
     @media only screen and (max-width: 768px) {
         padding-top: 1rem;

@@ -13,7 +13,7 @@ const Map = () => {
     let markers = useRef([]);
     let infoWindow = useRef();
 
-    const { location, filter, places, updateLocation, updatePlaces } = locationContext;
+    const { location, filter, updateLocation, updatePlaces } = locationContext;
 
     const isInfoWindowOpen = (infoWindow) => {
       let map = infoWindow.getMap();
@@ -73,20 +73,37 @@ const Map = () => {
         window.google.maps.event.addListener(markers.current[i], 'click', () => showInfoWindow(markers.current[i]));
         setTimeout(dropMarker(i), i * 150);
       }
-      console.log("setupmarkers")
     }, [showInfoWindow]);
 
-    const sortPlaces = useCallback((placesToSort) => {
-      if (filter === "Ratings") {
-        return [...placesToSort].sort((a, b) => b.rating - a.rating);
-      } else if (filter === "Price") {
-        return [...placesToSort].sort((a, b) => a.price_level - b.price_level);
-      } else {
-        return placesToSort;
-      }
-    }, [filter]);
+    const sortPlaces = useCallback((placesToSort, filter) => {
+      let sortedPlaces;
 
-    const search = useCallback(() => {
+          if (filter === "Ratings") {
+            sortedPlaces = [...placesToSort].sort((a, b) => {
+              const aHasRating = a.hasOwnProperty("rating");
+              const bHasRating = b.hasOwnProperty("rating");
+              if (aHasRating && bHasRating) {
+                return b.rating - a.rating;
+              }
+              return aHasRating ? -1 : bHasRating ? 1 : 0;
+            });
+          } else if (filter === "Price") {
+            sortedPlaces = [...placesToSort].sort((a, b) => {
+              const aHasPrice = a.hasOwnProperty("price_level");
+              const bHasPrice = b.hasOwnProperty("price_level");
+              if (aHasPrice && bHasPrice) {
+                return a.price_level - b.price_level;
+              }
+              return aHasPrice ? -1 : bHasPrice ? 1 : 0;
+            });
+          } else {
+            sortedPlaces = placesToSort;
+          }
+
+      return sortedPlaces;
+    }, []);
+
+    const search = useCallback((filter) => {
       const searchRequest = {
         bounds: map.current.getBounds(),
         types: ['restaurant']
@@ -95,11 +112,10 @@ const Map = () => {
       if(map.current.getBounds()) {
         placesService.current.nearbySearch(searchRequest, (results, status) => {
           if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-            console.log(results);
-            const sortedResults = sortPlaces(results);
+            const sortedResults = sortPlaces(results, filter);
+            console.log(sortedResults);
             updatePlaces(sortedResults);
             setUpMarkers(sortedResults);
-            console.log("search")
           }
         });
       }
@@ -116,7 +132,6 @@ const Map = () => {
       map.current = new window.google.maps.Map(mapRef.current, mapOptions);
       placesService.current = new window.google.maps.places.PlacesService(map.current);
 
-      window.google.maps.event.addListener(map.current, 'zoom_changed', () => search());
       window.google.maps.event.addListener(map.current, 'dragend', () => updateLocation({ geometry: { location: map.current.getCenter() } }));
     }, [search, updateLocation]);
 
@@ -126,20 +141,15 @@ const Map = () => {
           window.google.maps.event.clearListeners(map.current, 'zoom_changed');
           map.current.setZoom(14);
           map.current.panTo(location.geometry.location);
-          search();
-          window.google.maps.event.addListener(map.current, 'zoom_changed', () => search());
+          search(filter);
+          window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
         } else {
+          window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
           map.current.panTo(location.geometry.location);
-          search();
+          search(filter);
         }
       }
-    }, [location, search]);
-
-    useEffect(() => {
-        const sortedPlaces = sortPlaces(places);
-        updatePlaces(sortedPlaces);
-        setUpMarkers(sortedPlaces);
-    }, [filter, setUpMarkers, sortPlaces, updatePlaces]);
+    }, [location, filter, search]);
 
     return (
       <Wrapper>
