@@ -80,6 +80,7 @@ const Filter = () => {
     width: 6.5rem;
     height: 1.625rem;
     display: flex;
+    justify-content: center;
     align-items: center;
     cursor: pointer;
     padding: 0 0.7rem;

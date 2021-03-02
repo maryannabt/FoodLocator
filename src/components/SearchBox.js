@@ -28,11 +28,13 @@ const SearchBox = () => {
           }
         };
 
-        autocompleteRef.current.value = "";
+        if(autocompleteRef.current) {
+          autocompleteRef.current.value = "";
+        }
         updateLocation(locationData);
       });
     } else {
-      console.log('This Browser doesnt support HTML5 geolocation');
+      console.log("This Browser does not support HTML5 geolocation.");
     }
   }, [updateLocation]);
 

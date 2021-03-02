@@ -12,6 +12,7 @@ const Map = () => {
     let placesService = useRef();
     let markers = useRef([]);
     let infoWindow = useRef();
+    let zoomListener = useRef();
 
     const { location, filter, updateLocation, updatePlaces } = locationContext;
 
@@ -138,13 +139,15 @@ const Map = () => {
     useEffect(() => {
       if (location.geometry && location.geometry.location) {
         if (location.address_components) {
-          window.google.maps.event.clearListeners(map.current, 'zoom_changed');
+          window.google.maps.event.removeListener(zoomListener.current);
           map.current.setZoom(14);
           map.current.panTo(location.geometry.location);
           search(filter);
-          window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
+          zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
         } else {
-          window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
+          if (!zoomListener.current) {
+            zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
+          }
           map.current.panTo(location.geometry.location);
           search(filter);
         }

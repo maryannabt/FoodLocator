@@ -1,9 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
-
 const InfoWindow = ({ place }) => {
     const openText = place.opening_hours ? (place.opening_hours.isOpen() ? ' Open Now' : ' Currently Closed') : ' Hours N/A';
 
@@ -15,10 +12,10 @@ const InfoWindow = ({ place }) => {
         } else {
             return (
                 <span>
-                  {place.price_level >= 1 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
-                  {place.price_level >= 2 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
-                  {place.price_level >= 3 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
-                  {place.price_level >= 4 ? <FontAwesomeIcon icon={faDollarSign} /> : <i className="fa fa-usd" />}
+                  {place.price_level >= 1 ? <Icon filled><i className="fa fa-usd" /></Icon> : <Icon><i className="fa fa-usd" /></Icon>}
+                  {place.price_level >= 2 ? <Icon filled><i className="fa fa-usd" /></Icon> : <Icon><i className="fa fa-usd" /></Icon>}
+                  {place.price_level >= 3 ? <Icon filled><i className="fa fa-usd" /></Icon> : <Icon><i className="fa fa-usd" /></Icon>}
+                  {place.price_level >= 4 ? <Icon filled><i className="fa fa-usd" /></Icon> : <Icon><i className="fa fa-usd" /></Icon>}
                 </span>
             );
         }
@@ -72,8 +69,11 @@ const InfoWindow = ({ place }) => {
   const Info = styled(Address)`
     color: #333;
     margin-bottom: 0;
+  `;
 
+  const Icon = styled.span`
     & i {
-      color: grey;
+      color: ${props => (props.filled ? "inherit" : "grey")};
+      font-weight: ${props => (props.filled ? "600" : "inherit")};
     }
   `;
