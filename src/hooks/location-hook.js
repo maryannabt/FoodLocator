@@ -7,7 +7,6 @@ export const useLocation = () => {
 
   const updateLocation = useCallback((location) => {
     setLocation(location);
-    console.log(location);
   }, []);
 
   const updatePlaces = useCallback((places) => {

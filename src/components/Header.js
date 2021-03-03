@@ -15,7 +15,8 @@ const Header = () => {
   export default Header;
 
   const Wrapper = styled.div`
-    background-color: #800000;
+    background-color: #a40606;
+    background-image: linear-gradient(315deg, #d98324 0%, #a40606 74%);
     padding: 0.5rem 1rem;
     margin-bottom: 1.25rem;
     display: flex;

@@ -42,6 +42,10 @@ const InfoWindow = ({ place }) => {
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: rgba(0, 0, 0, 0.87);
+
+    @media only screen and (max-width: 768px) {
+      padding: 0.5rem;
+    }
   `;
 
   const Title = styled.h2`

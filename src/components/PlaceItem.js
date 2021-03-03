@@ -26,6 +26,17 @@ const PlaceItem = ({ place, index }) => {
         }
     };
 
+    const calculateStars = (stars) => {
+      const rating = (Math.round(place.rating * 2) / 2);
+
+      if (rating >= stars) {
+        return 'fa fa-star';
+      } else if (stars - 0.5 === rating) {
+        return 'fa fa-star-half-o';
+      }
+      return 'fa fa-star-o';
+    };
+
     return (
       <Wrapper>
         <Index>{index}</Index>
@@ -35,6 +46,16 @@ const PlaceItem = ({ place, index }) => {
           <Info>
             { priceLevel() }
             <span>{ openText }</span>
+          </Info>
+          <Info>
+            <span>
+              {place.rating || "Rating N/A"} &nbsp;
+              <i className={calculateStars(1)} />
+              <i className={calculateStars(2)} />
+              <i className={calculateStars(3)} />
+              <i className={calculateStars(4)} />
+              <i className={calculateStars(5)} />
+            </span>
           </Info>
         </Text>
         <Img alt="Place" src={`${place.photos ? place.photos[0].getUrl(dimensions) : 'https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71'}.png`} />
@@ -87,6 +108,10 @@ const PlaceItem = ({ place, index }) => {
 
   const Info = styled.p`
     color: #333;
+
+    & .fa-star, .fa-star-half-o{
+      color: gold;
+    }
   `;
 
   const Icon = styled.span`

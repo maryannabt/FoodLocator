@@ -114,7 +114,6 @@ const Map = () => {
         placesService.current.nearbySearch(searchRequest, (results, status) => {
           if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
             const sortedResults = sortPlaces(results, filter);
-            console.log(sortedResults);
             updatePlaces(sortedResults);
             setUpMarkers(sortedResults);
           }
