@@ -8,12 +8,12 @@ import PlacesList from "./PlacesList";
 
 const Places = () => {
     const locationContext = useContext(LocationContext);
-    const { filter } = locationContext;
+    const { places } = locationContext;
     const listRef = useRef();
 
     useEffect(() => {
       listRef.current.scrollTop = 0;
-    }, [filter]);
+    }, [places]);
 
     return (
       <Wrapper ref={listRef}>
