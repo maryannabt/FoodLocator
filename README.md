@@ -6,7 +6,7 @@ Welcome to Food Locator - a web app allowing you to visualize the nearby restaur
 - You can also press on the geolocation button located in the search bar to locate yourself and search for the restaurants.
 - Select rating or price filter via the dropdown to reload the map and list the found restaurants ordered by the filter you selected.
 - Zoom or drag the map to redo search in the new location.
-- Hover over the marker to see the info window of specific restaurant.
+- Click on the marker to see the info window of specific restaurant.
 
 
 Built with React and Google Maps API.
