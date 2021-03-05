@@ -121,6 +121,17 @@ const Map = () => {
       }
     }, [setUpMarkers, sortPlaces, updatePlaces]);
 
+    const debounce = useCallback((callback, delay) => {
+      let interval;
+      return (...args) => {
+        clearTimeout(interval);
+        interval = setTimeout(() => {
+          interval = null;
+          callback(...args);
+        }, delay);
+      };
+    }, []);
+
     useEffect(() => {
       const mapOptions = {
         zoom: 14,
@@ -132,26 +143,32 @@ const Map = () => {
       map.current = new window.google.maps.Map(mapRef.current, mapOptions);
       placesService.current = new window.google.maps.places.PlacesService(map.current);
 
-      window.google.maps.event.addListener(map.current, 'dragend', () => updateLocation({ geometry: { location: map.current.getCenter() } }));
-    }, [search, updateLocation]);
+      const updateLocationCallback = () => updateLocation({ geometry: { location: map.current.getCenter() } });
+      const debounceDragend = debounce(updateLocationCallback, 2000);
+      
+      window.google.maps.event.addListener(map.current, 'dragend', debounceDragend);
+    }, [debounce, updateLocation]);
 
     useEffect(() => {
+      const searchCallback = () => search(filter);
+      const debounceSearch = debounce(searchCallback, 1000);
+
       if (location.geometry && location.geometry.location) {
         if (location.address_components) {
           window.google.maps.event.removeListener(zoomListener.current);
           map.current.setZoom(14);
           map.current.panTo(location.geometry.location);
           search(filter);
-          zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
+          zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', debounceSearch);
         } else {
           if (!zoomListener.current) {
-            zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', () => search(filter));
+            zoomListener.current = window.google.maps.event.addListener(map.current, 'zoom_changed', debounceSearch);
           }
           map.current.panTo(location.geometry.location);
           search(filter);
         }
       }
-    }, [location, filter, search]);
+    }, [location, filter, search, debounce]);
 
     return (
       <Wrapper>
